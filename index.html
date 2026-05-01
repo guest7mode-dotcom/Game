@@ -5,8 +5,8 @@
   <style>
     body {
       margin: 0;
-      background: #1e1e1e;
       overflow: hidden;
+      background: #111;
     }
     canvas {
       display: block;
@@ -24,18 +24,17 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Load sprite from GitHub
+// Load sprite
 const sprite = new Image();
-sprite.src = "YOUR_RAW_GITHUB_LINK_HERE";
+sprite.src = "Character1.png";
 
-// AI character
-let unit = {
+// Unit (AI character)
+const unit = {
   x: canvas.width / 2,
   y: canvas.height / 2,
-  speed: 1.5,
+  speed: 2,
   targetX: 0,
-  targetY: 0,
-  timer: 0
+  targetY: 0
 };
 
 // Pick random target
@@ -44,11 +43,10 @@ function newTarget() {
   unit.targetY = Math.random() * canvas.height;
 }
 
-// AI update
-function updateAI() {
+// AI movement
+function update() {
   let dx = unit.targetX - unit.x;
   let dy = unit.targetY - unit.y;
-
   let dist = Math.sqrt(dx * dx + dy * dy);
 
   if (dist < 5) {
@@ -62,6 +60,26 @@ function updateAI() {
 // Draw
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (sprite.complete) {
+    ctx.drawImage(sprite, unit.x, unit.y, 64, 64);
+  }
+}
+
+// Loop
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+// Start
+newTarget();
+loop();
+</script>
+
+</body>
+</html>  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (sprite.complete) {
     ctx.drawImage(sprite, unit.x, unit.y, 48, 48);
